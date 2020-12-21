@@ -1,5 +1,6 @@
 import os
 import pygame
+import math
 
 from Event import Event
 from Object.gameObject import GameObject
@@ -14,30 +15,42 @@ class Player(GameObject, EventHandlerInterface):
         self.position = [x, y]
         self.image = pygame.image.load(os.path.join('Images', 'spaceshooter.png'))
         self.rect = self.image.get_rect(center=(self.position[0], self.position[1]))
-        self.direction = [0, 0]
 
-    def move(self, direction, second_direction):
+    def update_image(self):
+        self.image = pygame.transform.rotate(self.image, math.pi)
+
+    def move(self, direction):
         """
         Permet au joueur de se déplacer. Le second argument sert à empêcher une récursivité infinie.
         """
-        if direction == (0, -1):
+        if direction == [0, -1]:
             # up
-            self.direction[1] = -1
-            self.position[1] -= 1
-        elif direction == (0, 1):
+            self.position[1] -= 1 * self.speed
+        elif direction == [0, 1]:
             # down
-            self.direction[1] = 1
-            self.position[1] += 1
-        elif direction == (1, 0):
+            self.position[1] += 1 * self.speed
+        elif direction == [1, 0]:
             # right
-            self.direction[0] = 1
-            self.position[0] += 1
-        elif direction == (-1, 0):
+            self.position[0] += 1 * self.speed
+        elif direction == [-1, 0]:
             # left
-            self.direction[0] = -1
-            self.position[0] -= 1
-        if second_direction and self.direction != (0, 0):
-            self.move(self.direction, False)
+            self.position[0] -= 1 * self.speed
+        elif direction == [-1, -1]:
+            # up left
+            self.position[1] -= 1 * self.speed
+            self.position[0] -= 1 * self.speed
+        elif direction == [-1, 1]:
+            # down left
+            self.position[1] += 1 * self.speed
+            self.position[0] -= 1 * self.speed
+        elif direction == [1, -1]:
+            # up right
+            self.position[1] -= 1 * self.speed
+            self.position[0] += 1 * self.speed
+        elif direction == [1, 1]:
+            # down right
+            self.position[1] += 1 * self.speed
+            self.position[0] += 1 * self.speed
         self.rect = self.image.get_rect(center=(self.position[0], self.position[1]))
 
     def update(self, event: Event):
