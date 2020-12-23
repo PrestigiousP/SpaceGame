@@ -18,7 +18,7 @@ def main():
     space_background = pygame.image.load(os.path.join('Images', 'space.png'))
     space_rect = space_background.get_rect()
     # Create player
-    player = Player(screen, 0.1, 500, 340, 100)
+    player = Player(screen, 0.5, 500, 340, 100)
 
     rocks = []
     for i in range(10):
@@ -52,7 +52,7 @@ def main():
             if event.type == pygame.KEYDOWN:
                 move = movement.get(event.key, move)
                 arrow_key_pressed += 1
-                if arrow_key_pressed < 3:
+                if arrow_key_pressed < 4:
                     player_movement[0] += move[0]
                     player_movement[1] += move[1]
                 else:
@@ -65,8 +65,8 @@ def main():
                     player_movement[0] = 0
                 elif event.scancode == 81 or event.scancode == 82:
                     player_movement[1] = 0
-                print(player_movement)
 
+        player.rotate_image(player_movement)
         player.move(player_movement)
 
         screen.blit(space_background, space_rect)
