@@ -1,6 +1,6 @@
 import os
 import pygame
-import math
+import time
 
 from Event import Event
 from Object.gameObject import GameObject
@@ -26,39 +26,44 @@ class Player(GameObject, EventHandlerInterface):
             (1, -1): 315,
         }
         self.image_direction = (0, -1)
+        time.perf_counter()
+        self.image_timer1 = 0
+        self.save_image_rotation = None
 
     def rotate_image(self, direction):
         convert = tuple(direction)
-        """empêcher que le vaisseau se repositionner dans un axe x ou y après avoir été dans un angle orizontale 
-        et avoir arrêté de bouger"""
-        # if (self.image_direction == (1, 1) or self.image_direction == (-1, 1) or
-        #     self.image_direction == (1, -1) or self.image_direction == (-1, -1)):
+        if convert != (0, 0):
+            """empêcher que le vaisseau se repositionner dans un axe x ou y après avoir été dans un angle horizontale 
+                                et avoir arrêté de bouger"""
+            # if convert != (1, 1) and convert != (-1, 1) and convert != (1, -1) and convert != (-1, -1):
+            #     print(self.image_timer1, " non diag")
+            #     if self.image_timer1 > 0 and (time.perf_counter() - self.image_timer1) < 15:
+            #         self.image = pygame.image.load(os.path.join('Images', 'spaceshooter.png'))
+            #         self.image = pygame.transform.rotate(self.image, self.image_rotation[self.save_image_rotation])
+            #         self.image_direction = self.save_image_rotation
+            #         # self.image_timer1 = 0
+            #     else:
+            #         self.image = pygame.image.load(os.path.join('Images', 'spaceshooter.png'))
+            #         self.image = pygame.transform.rotate(self.image, self.image_rotation[convert])
+            #         self.image_direction = convert
+            #         print(time.perf_counter() - self.image_timer1)
+            #         if time.perf_counter() - self.image_timer1 > 10:
+            #             self.image_timer1 = 0
+            # else:
+            #     print(self.image_timer1, " diag")
+            #     # Sauvegarde l'image en diagonale
+            #     self.save_image_rotation = convert
+            #     # Start un timer pour évaluer si l'image doit resté en diagonale
+            #     self.image_timer1 = time.perf_counter()
+            #     self.image = pygame.image.load(os.path.join('Images', 'spaceshooter.png'))
+            #     self.image = pygame.transform.rotate(self.image, self.image_rotation[convert])
+            #     self.image_direction = convert
 
-
-        if convert != (0, 0) and convert != self.image_direction:
             self.image = pygame.image.load(os.path.join('Images', 'spaceshooter.png'))
             self.image = pygame.transform.rotate(self.image, self.image_rotation[convert])
             self.image_direction = convert
 
-        # rotation = 0
-        # convert = tuple(direction)
-        # if convert != (0, 0) and convert != self.image_direction:
-        #     result = convert[0] - self.image_direction[0]
-        #     result2 = convert[1] - self.image_direction[1]
-        #     if result == 1:
-        #         rotation += 45
-        #     elif result == -1:
-        #         rotation += 225
-        #     elif result == 2:
-        #         rotation += 90
-        #     if result2 == 1:
-        #         rotation += 45
-        #     elif result2 == -1:
-        #         rotation += 225
-        #     elif result == 2:
-        #         rotation += 90
-        #     self.image_direction = convert
-        # self.image = pygame.transform.rotate(self.image, rotation)
+
 
     def move(self, direction):
         """

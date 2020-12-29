@@ -1,6 +1,7 @@
 import random
 import pygame
 import sys
+import time
 import os
 from Object.meteor import Meteor
 from Object.player import Player
@@ -18,17 +19,13 @@ def main():
     space_background = pygame.image.load(os.path.join('Images', 'space.png'))
     space_rect = space_background.get_rect()
     # Create player
-    player = Player(screen, 0.5, 500, 340, 100)
+    player = Player(screen, 0.8, 500, 340, 100)
 
     rocks = []
     for i in range(10):
-        rocks.append(Meteor(screen, random.uniform(0.2, 1), 100))
+        # rocks.append(Meteor(screen, random.uniform(0.2, 1), 100))
+        rocks.append(Meteor(screen,  1, 100))
         rocks[i].set_random_position()
-
-    # pressed_event = True
-    # pressed = False
-    # test = 1
-    # list_listeners = [player]
 
     # a dict to map keys to a direction
     movement = {pygame.K_UP: (0, -1),
@@ -58,7 +55,7 @@ def main():
                 else:
                     player_movement[0] += move[0] * 2
                     player_movement[1] += move[1] * 2
-                print(player_movement)
+
             if event.type == pygame.KEYUP:
                 arrow_key_pressed -= 1
                 if event.scancode == 79 or event.scancode == 80:
@@ -73,9 +70,17 @@ def main():
         screen.blit(player.image, player.rect)
 
         for i in range(10):
-            screen.blit(pygame.transform.rotate(rocks[i].image, 0), rocks[i].rect)
-            rocks[i].move()
-
+            if (rocks[i].position[0] > 1100 or rocks[i].position[0] < -100 or rocks[i].position[1] > 780 or
+                    rocks[i].position[1] < -100):
+                rocks[i].set_random_position()
+                print(rocks[i].position)
+            else:
+                screen.blit(pygame.transform.rotate(rocks[i].image, 0), rocks[i].rect)
+                # should notify
+                rocks[i].move()
+        # for i in range(10):
+        #     screen.blit(pygame.transform.rotate(rocks[i].image, 0), rocks[i].rect)
+        #     rocks[i].move()
         pygame.display.flip()
 
 

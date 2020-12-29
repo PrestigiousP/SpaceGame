@@ -44,20 +44,20 @@ class Meteor(GameObject):
         y = None
         if 0 <= r < 0.25:
             self.relative_position = 'top'
-            x = random.randint(0, 850)
+            x = random.randint(0, self.screen.get_width())
             y = -50
         elif 0.25 <= r < 0.5:
             self.relative_position = 'right'
-            x = 850
-            y = random.randint(-50, 650)
+            x = self.screen.get_width()+50
+            y = random.randint(-50, self.screen.get_height())
         elif 0.5 <= r < 0.75:
             self.relative_position = 'bottom'
-            x = random.randint(0, 850)
-            y = 650
+            x = random.randint(0, self.screen.get_width())
+            y = self.screen.get_height()+50
         elif 0.75 <= r < 1:
             self.relative_position = 'left'
             x = -50
-            y = random.randint(-50, 650)
+            y = random.randint(-50, self.screen.get_height())
         self.position = [x, y]
         self.rect = self.image.get_rect(center=(self.position[0], self.position[1]))
         return self.position
