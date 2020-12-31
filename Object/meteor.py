@@ -7,7 +7,7 @@ from Object.gameObject import GameObject
 
 class Meteor(GameObject):
 
-    def __init__(self, screen, speed, health):
+    def __init__(self, screen, speed, health, damage):
         super().__init__(screen, speed, health)
 
         self.health = health
@@ -17,7 +17,10 @@ class Meteor(GameObject):
 
         # Set the image for the object
         self.image = pygame.image.load(os.path.join('Images', 'meteor.png'))
+        self.position = [0, 0]
+        self.hitbox = pygame.draw.circle(self.screen, (0, 255, 0), self.position, 30)
         self.rect = self.image.get_rect()
+        self.damage = damage
 
     def move(self):
         angle = None
@@ -37,6 +40,12 @@ class Meteor(GameObject):
         x = self.speed * math.cos(angle)
         self.position = (self.position[0] + x, self.position[1] + y)
         self.rect = self.image.get_rect(center=(self.position[0], self.position[1]))
+        #self.hitbox = pygame.draw.circle(self.screen, (0, 255, 0), self.position, 30)
+        self.hitbox = (self.position, 30)
+
+    def get_hitbox(self):
+        """ The hitbox is a circle. It contains the position about the object and the radius of the hitbox."""
+        return self.hitbox
 
     def set_random_position(self):
         r = random.random()

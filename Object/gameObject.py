@@ -23,6 +23,9 @@ class GameObject(pygame.sprite.Sprite):
         self.rect = None
         # self.image.get_rect(center=(position[0], position[1]))
 
+    def get_hitbox(self):
+        pass
+
     def get_hit(self, damage):
         self.health -= damage
         if self.health <= 0:

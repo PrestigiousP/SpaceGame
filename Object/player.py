@@ -1,7 +1,7 @@
 import os
 import pygame
+from time import *
 import time
-
 from Event import Event
 from Object.gameObject import GameObject
 from EventHandlerInterface import EventHandlerInterface
@@ -29,6 +29,16 @@ class Player(GameObject, EventHandlerInterface):
         time.perf_counter()
         self.image_timer1 = 0
         self.save_image_rotation = None
+        #self.circle = pygame.draw.circle(screen, (66, 255, 10), self.position, 32)
+        self.hitbox = (self.position, 32)
+
+    def get_hit(self, damage):
+        self.health -= damage
+        if self.health <= 0:
+            pass
+
+    def get_hitbox(self):
+        return self.hitbox
 
     def rotate_image(self, direction):
         convert = tuple(direction)
@@ -62,8 +72,6 @@ class Player(GameObject, EventHandlerInterface):
             self.image = pygame.image.load(os.path.join('Images', 'spaceshooter.png'))
             self.image = pygame.transform.rotate(self.image, self.image_rotation[convert])
             self.image_direction = convert
-
-
 
     def move(self, direction):
         """
